@@ -1,0 +1,845 @@
+<!-- @noSnoop -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./VUE.js"></script>
+    <!--引入 element-ui 的样式，-->
+    <link rel="stylesheet" href="./element-ui-style.css" />
+    <!-- <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    /> -->
+    <!-- 引入element 的组件库-->
+    <script src="./element-ui.js"></script>
+    <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+    <!-- 引入echarts -->
+    <script type="text/javascript" src="./echarts.min.js"></script>
+    <title>同比环比</title>
+  </head>
+  <style lang="scss">
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #e9ecef;
+    }
+    #home {
+      width: calc(100% - 20px);
+      height: calc(100vh - 20px);
+      font-family: MiSans;
+      margin: 10px;
+      padding: 20px;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+
+      & > .title {
+        color: #212529;
+        font-size: 18px;
+        letter-spacing: 0.05em;
+      }
+
+      .search {
+        width: 100%;
+        margin: 40px 0;
+        display: flex;
+        align-items: flex-end;
+
+        & > div {
+          display: flex;
+          flex-direction: column;
+          margin-right: 10px;
+
+          & > p {
+            color: #444444;
+            margin-bottom: 7px;
+            padding-left: 5px;
+          }
+
+          & > .el-select {
+            & > .is-focus {
+              .el-input__inner {
+                border-color: #3381f6;
+              }
+            }
+
+            .el-input__inner {
+              border: 1px solid transparent;
+              background-color: #e9ecef;
+              color: #3381f6;
+              font-weight: 700;
+              border-radius: 8px;
+            }
+          }
+
+          & > div {
+            display: flex;
+            align-items: center;
+
+            & > .el-date-editor {
+              width: 160px;
+
+              &:first-child {
+                margin-right: 10px;
+              }
+
+              .el-input__inner {
+                background: #e9ecef;
+                color: #3381f6;
+                font-weight: 700;
+                border-radius: 8px;
+                border: 1px solid transparent;
+
+                &:focus {
+                  border-color: #3381f6;
+                }
+              }
+
+              & > .is-focus {
+                .el-input__inner {
+                }
+              }
+            }
+          }
+
+          & > .el-date-editor {
+            width: 330px;
+            border-radius: 8px;
+            background: #e9ecef;
+            border: 1px solid transparent;
+
+            .el-range-input {
+              background: #e9ecef;
+              color: #3381f6;
+              font-weight: 700;
+            }
+
+            .el-range-separator {
+              padding: 0;
+            }
+          }
+
+          & > .is-active {
+            border-color: #3381f6;
+          }
+        }
+
+        .el-button {
+          padding: 12px 30px;
+          border-radius: 10px;
+
+          &:first-child {
+            background: #3f8cff;
+          }
+          &:last-child {
+            border: 1px solid #3f8cff;
+          }
+        }
+      }
+
+      .content {
+        flex: 1;
+        display: flex;
+
+        & > div {
+          border-radius: 16px;
+          background: #ffffff;
+          box-shadow: 0px 2px 16px 0px #8894a133;
+        }
+
+        .left {
+          width: 30%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          padding: 20px;
+
+          & > div {
+            width: 100%;
+
+            &:nth-child(1) {
+              display: flex;
+              justify-content: space-between;
+              margin: 10px 0 50px;
+
+              & > p {
+                padding: 8px 20px;
+                font-size: 20px;
+
+                &:nth-child(1) {
+                  color: #212529;
+                  display: flex;
+                  align-items: center;
+
+                  & > img {
+                    margin-right: 10px;
+                  }
+                }
+                &:nth-child(2) {
+                  color: #05b33c;
+                  border-radius: 30px;
+                  background: rgba(5, 179, 60, 0.2);
+
+                  & > span {
+                    color: #444;
+                    margin-left: 5px;
+                  }
+                }
+              }
+            }
+
+            &:nth-child(2),
+            &:nth-child(3) {
+              flex: 1;
+              border-radius: 24px;
+              border: 1px solid #d8e0f0;
+              box-shadow: 0px 1px 2px 0px #b8c8e038;
+              margin-bottom: 30px;
+
+              display: flex;
+              align-items: center;
+
+              & > div {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                /* img {
+                  width: 100px;
+                  height: 111px;
+                } */
+
+                & > div {
+                  display: flex;
+                  flex-direction: column;
+                  margin-left: 40px;
+
+                  & > p {
+                    color: #212529;
+                    font-weight: bold;
+
+                    &:nth-child(1) {
+                      color: #3381f6;
+                      font-size: 24px;
+                    }
+                    &:nth-child(2) {
+                      font-size: 40px;
+                      margin: 15px 0 10px;
+
+                      & > span {
+                        font-size: 24px;
+                      }
+                    }
+                    &:nth-child(3) {
+                      font-size: 15px;
+                    }
+                  }
+                }
+              }
+            }
+
+            &:nth-child(3) {
+              margin-bottom: 20px;
+
+              & > div {
+                & > div {
+                  & > p:nth-child(1) {
+                    color: #a806ff;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .right {
+        flex: 1;
+        margin-left: 15px;
+        height: 100%;
+        padding: 30px;
+        position: relative;
+
+        & > img {
+          position: absolute;
+          top: 4%;
+          left: 1.5%;
+        }
+
+        & > div {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    .el-select-dropdown {
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0px 6px 40px 0px #7991ad4c;
+      border: none;
+      padding: 0 10px;
+
+      .el-select-dropdown__item {
+        padding: 0 10px;
+        color: #252641;
+      }
+
+      .selected {
+        color: #3381f6;
+      }
+    }
+  </style>
+  <body>
+    <div id="home">
+      <h1 class="title">数据中心冷水机组同比环比分析</h1>
+      <div class="search">
+        <div>
+          <p>分析类型</p>
+          <el-select
+            v-model="analysisType"
+            placeholder="请选择"
+            @change="getTimeOptions"
+          >
+            <el-option
+              v-for="item in typeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div>
+          <p>设备选择</p>
+          <el-select
+            v-model="device"
+            placeholder="请选择"
+            @change="getParamsOptions"
+          >
+            <el-option
+              v-for="item in deviceOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div>
+          <p>参数选择</p>
+          <el-select v-model="params" placeholder="请选择">
+            <el-option
+              v-for="item in paramsOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div>
+          <p>比对类型</p>
+          <el-select v-model="timeType" placeholder="请选择">
+            <el-option
+              v-for="item in timeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div>
+          <p>日期选择</p>
+          <el-date-picker
+            v-if="dataType != 'yearrange'"
+            v-model="selectDate"
+            :type="dataType"
+            range-separator="至"
+            :start-placeholder="dataType=='daterange'?'开始日期':'开始月份'"
+            :end-placeholder="dataType=='daterange'?'结束日期':'结束月份'"
+            :value-format="dataType=='daterange'?'yyyy-MM-dd':'yyyy-MM'"
+          >
+          </el-date-picker>
+          <div v-else>
+            <el-date-picker
+              v-model="startYear"
+              type="year"
+              placeholder="开始年份"
+              @change="yearChange"
+              value-format="yyyy"
+              :clearable="false"
+            >
+            </el-date-picker>
+            <el-date-picker
+              v-model="endYear"
+              type="year"
+              placeholder="结束年份"
+              @change="yearChange"
+              value-format="yyyy"
+              :clearable="false"
+            >
+            </el-date-picker>
+          </div>
+        </div>
+        <el-button type="primary" @click="query">查询</el-button>
+        <el-button @click="reset">重置</el-button>
+      </div>
+      <div class="content">
+        <div class="left">
+          <div>
+            <p>
+              <img src="./icon_instruction.svg" alt="" />
+              制冷系统总能耗
+            </p>
+            <p>↑ 15% <span>同比</span></p>
+          </div>
+
+          <div>
+            <div>
+              <img src="./同比环比1.png" alt="" />
+              <div>
+                <p>2025/04</p>
+                <p>9,564,000 <span>kWh</span></p>
+                <p>累计能耗</p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div>
+              <img src="./同比环比2.png" alt="" />
+              <div>
+                <p>2024/04</p>
+                <p>1,022,021 <span>kWh</span></p>
+                <p>累计能耗</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="right">
+          <img src="./icon_instruction.svg" alt="" />
+          <div class="charts" ref="line" v-if="analysisType=='1'"></div>
+          <div class="charts" ref="column" v-else></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      Vue.config.productionTip = false;
+      const vm = new Vue({
+        el: "#home",
+        data() {
+          return {
+            analysisType: "1",
+            typeOptions: [
+              { value: "1", label: "同比" },
+              { value: "2", label: "环比" },
+            ],
+            device: "1",
+            deviceOptions: [
+              { value: "1", label: "L-1磁悬浮机组" },
+              { value: "2", label: "L-2磁悬浮机组" },
+              { value: "3", label: "L-3螺杆机组" },
+              { value: "4", label: "L-4螺杆机组" },
+              { value: "5", label: "制冷系统" },
+            ],
+            params: "",
+            paramsOptions: [],
+            timeType: "1",
+            timeOptions: [],
+            dataType: "yearrange",
+            selectDate: ["", ""],
+            startYear: "",
+            endYear: "",
+
+            line: null,
+            column: null,
+            chartsData: {},
+          };
+        },
+        watch: {
+          timeType: {
+            handler(newVal) {
+              this.selectDate = ["", ""];
+              this.dataType =
+                newVal == 1
+                  ? "yearrange"
+                  : newVal == 2
+                  ? "monthrange"
+                  : "daterange";
+            },
+            immediate: true,
+            deep: true,
+          },
+        },
+        mounted() {
+          this.getTimeOptions();
+          this.getParamsOptions();
+          this.initCharts();
+        },
+        methods: {
+          /**
+           * 获取日期选择下拉框数据
+           */
+          getTimeOptions() {
+            if (this.analysisType == 1) {
+              this.timeOptions = [
+                { value: "1", label: "年对比" },
+                { value: "2", label: "月对比" },
+                { value: "3", label: "日对比" },
+              ];
+            } else {
+              this.timeOptions = [
+                { value: "2", label: "月对比" },
+                { value: "3", label: "日对比" },
+              ];
+            }
+            this.timeType = this.timeOptions[0].value;
+          },
+
+          /**
+           * 获取参数选择下拉框数据
+           */
+          getParamsOptions() {
+            switch (this.device) {
+              case "1":
+                this.paramsOptions = [
+                  { value: "L-1制冷量", label: "L-1制冷量" },
+                  { value: "L-1负载量", label: "L-1负载量" },
+                  { value: "L-1耗电量", label: "L-1耗电量" },
+                  { value: "L-1COP", label: "L-1COP" },
+                ];
+                break;
+              case "2":
+                this.paramsOptions = [
+                  { value: "L-2制冷量", label: "L-2制冷量" },
+                  { value: "L-2负载量", label: "L-2负载量" },
+                  { value: "L-2耗电量", label: "L-2耗电量" },
+                  { value: "L-2COP", label: "L-2COP" },
+                ];
+                break;
+              case "3":
+                this.paramsOptions = [
+                  { value: "L-3制冷量", label: "L-3制冷量" },
+                  { value: "L-3负载量", label: "L-3负载量" },
+                  { value: "L-3耗电量", label: "L-3耗电量" },
+                  { value: "L-3COP", label: "L-3COP" },
+                ];
+                break;
+              case "4":
+                this.paramsOptions = [
+                  { value: "L-4制冷量", label: "L-4制冷量" },
+                  { value: "L-4负载量", label: "L-4负载量" },
+                  { value: "L-4耗电量", label: "L-4耗电量" },
+                  { value: "L-4COP", label: "L-4COP" },
+                ];
+                break;
+              case "5":
+                this.paramsOptions = [
+                  { value: "制冷系统总能耗", label: "制冷系统总能耗" },
+                  { value: "制冷系统SCOP", label: "制冷系统SCOP" },
+                ];
+                break;
+            }
+            this.params = this.paramsOptions[0].value;
+          },
+
+          /**
+           * 年份选择处理
+           */
+          yearChange(val) {
+            if (!this.startYear || !this.endYear) return;
+
+            if (Number(this.startYear) > Number(this.endYear)) {
+              this.startYear = this.endYear;
+              this.endYear = val;
+            }
+            this.selectDate = [this.startYear, this.endYear];
+          },
+
+          /**
+           * 查询
+           */
+          query() {
+            if (!this.selectDate[0] || !this.selectDate[1]) {
+              this.$message.error("请选择年份范围！");
+              return;
+            }
+            if (this.analysisType == 1) {
+              this.setLineChartsData();
+            } else {
+              this.setColumnChartsData();
+            }
+          },
+
+          /**
+           * 重置
+           */
+          reset() {
+            this.analysisType = "1";
+            this.device = "1";
+            this.getParamsOptions();
+            this.timeType = "1";
+            this.dataType = "yearrange";
+            this.selectDate = ["", ""];
+            this.startYear = "";
+            this.endYear = "";
+            this.chartsData.series = [];
+            this.line.setOption(this.chartsData, true);
+          },
+
+          /**
+           * 初始化图表
+           */
+          initCharts(type) {
+            this.line = echarts.init(this.$refs.line);
+            this.chartsData = {
+              title: [
+                {
+                  text: "曲线图",
+                  left: "1%",
+                  textStyle: {
+                    fontSize: 18,
+                    color: "#212529",
+                  },
+                },
+                {
+                  subtext: "单位：kWh",
+                  top: "6%",
+                  left: "5.5%",
+                  subtextStyle: {
+                    color: "#000",
+                    fontSize: 16,
+                  },
+                },
+              ],
+              tooltip: {
+                trigger: "axis",
+              },
+              legend: {
+                data: ["2025/04", "2024/04"],
+                right: 0,
+                icon: "circle",
+                itemGap: 30,
+                itemHeight: 10,
+                itemStyle: {},
+                textStyle: {
+                  color: "#212529",
+                  fontSize: 16,
+                  padding: [0, 0, 0, -8],
+                },
+              },
+              grid: {
+                top: "13%",
+                left: "1%",
+                right: "4%",
+                bottom: "3%",
+                containLabel: true,
+              },
+              xAxis: {
+                type: "category",
+                boundaryGap: false,
+                data: ["1日", "2日", "3日", "4日", "5日", "6日", "7日"],
+                axisLine: {
+                  lineStyle: {
+                    color: "#dbdbdb",
+                  },
+                },
+                axisLabel: {
+                  textStyle: {
+                    color: "#6C757D",
+                  },
+                },
+                splitLine: {
+                  show: true, // 是否显示分隔线。默认数值轴显示，类目轴不显示
+                  color: ["#ccc"], // 分隔线颜色，可以设置成单个颜色，也可以设置成颜色数组，分隔线会按数组中颜色的顺序依次循环设置颜色
+                  width: 1, // 分隔线线宽
+                  type: "solid", // 坐标轴线线的类型（'solid'，实线类型；'dashed'，虚线类型；'dotted',点状类型）
+                },
+              },
+              yAxis: {
+                type: "value",
+                axisLine: {
+                  show: true, // 是否显示坐标轴轴线
+                  // symbol: ["none", "arrow"], // 轴线两端箭头，两个值，none表示没有箭头，arrow表示有箭头
+                  // symbolSize: [10, 15], // 轴线两端箭头大小，数值一表示宽度，数值二表示高度
+                  lineStyle: {
+                    color: "#dbdbdb", // 坐标轴线线的颜色
+                    width: "1", // 坐标轴线线宽
+                    type: "solid", // 坐标轴线线的类型（'solid'，实线类型；'dashed'，虚线类型；'dotted',点状类型）
+                  },
+                },
+                axisLabel: {
+                  show: true,
+                  formatter: "{value}k",
+                  margin: 20,
+                  textStyle: {
+                    color: "#000",
+                    fontSize: 16,
+                  },
+                },
+              },
+              series: [],
+            };
+            this.line.setOption(this.chartsData, true);
+          },
+
+          /**
+           *  设置折线图表数据
+           */
+          setLineChartsData() {
+            const series = [
+              {
+                name: "2025/04",
+                type: "line",
+                stack: "Total",
+                color: "#3F8CFF",
+                areaStyle: {
+                  normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      {
+                        offset: 0,
+                        color: "rgb(63, 140, 255)",
+                      },
+                      {
+                        offset: 0.2,
+                        color: "rgb(63, 140, 255, 0.2)",
+                      },
+                      {
+                        offset: 1,
+                        color: "rgb(63, 140, 255, 0.0)",
+                      },
+                    ]),
+                  },
+                },
+                symbol: false,
+                symbolSize: 0,
+                smooth: true,
+                data: [120, 132, 101, 134, 90, 155, 170],
+              },
+              {
+                name: "2024/04",
+                type: "line",
+                stack: "Total",
+                color: "#A806FF",
+                areaStyle: {
+                  normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      {
+                        offset: 0,
+                        color: "rgb(168, 6, 255)",
+                      },
+                      {
+                        offset: 0.2,
+                        color: "rgb(168, 6, 255, 0.2)",
+                      },
+                      {
+                        offset: 1,
+                        color: "rgb(168, 6, 255, 0.0)",
+                      },
+                    ]),
+                  },
+                },
+                symbol: false,
+                symbolSize: 0,
+                smooth: true,
+                data: [220, 182, 191, 170, 200, 190, 180],
+              },
+            ];
+            this.chartsData.series = series;
+            this.line.setOption(this.chartsData, true);
+          },
+
+          /**
+           * 设置柱状图表数据
+           */
+          setColumnChartsData() {
+            this.line = echarts.init(this.$refs.column);
+            this.chartsData = {
+              title: [
+                {
+                  text: "柱状图",
+                  left: "1%",
+                  textStyle: {
+                    fontSize: 18,
+                    color: "#212529",
+                  },
+                },
+                {
+                  subtext: "单位：kWh",
+                  top: "6%",
+                  left: "5.5%",
+                  subtextStyle: {
+                    color: "#000",
+                    fontSize: 16,
+                  },
+                },
+              ],
+              tooltip: {
+                trigger: "axis",
+              },
+              legend: {
+                orient: "vertical",
+                data: ["2025/04", "2024/04"],
+                right: 0,
+                icon: "circle",
+                itemGap: 30,
+                itemHeight: 10,
+                textStyle: {
+                  color: "#212529",
+                  fontSize: 16,
+                  padding: [0, 0, 0, -8],
+                },
+              },
+              grid: {
+                top: "15%",
+                left: "1%",
+                right: "4%",
+                bottom: "0%",
+                containLabel: true,
+              },
+              xAxis: {
+                type: "category",
+                data: ["2025/04", "2024/04"],
+              },
+              yAxis: {
+                type: "value",
+              },
+              series: [],
+            };
+            const series = [
+              {
+                type: "bar",
+                stack: "Total",
+                data: [5564, 5022],
+                itemStyle: {
+                  color: function (params) {
+                    // 自定义颜色数组（可选）
+                    var colorList = ["#F69433", "#03B515"];
+                    return colorList[params.dataIndex];
+                  },
+                },
+                // 设置数据标签
+                label: {
+                  show: true, // 显示标签
+                  position: "top", // 标签位置在柱子顶部
+                  color: "inherit", // 继承柱子颜色
+                  fontWeight: "bold", // 可选：加粗文字
+                },
+              },
+            ];
+            this.chartsData.series = series;
+            this.line.setOption(this.chartsData, true);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

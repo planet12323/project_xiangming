@@ -1,0 +1,782 @@
+<!-- @noSnoop -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./VUE.js"></script>
+    <!--引入 element-ui 的样式，-->
+    <link rel="stylesheet" href="./element-ui-style.css" />
+    <!-- <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    /> -->
+    <!-- 引入element 的组件库-->
+    <script src="./element-ui.js"></script>
+    <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+    <!-- 引入echarts -->
+    <script type="text/javascript" src="./echarts.min.js"></script>
+    <title>历史趋势</title>
+  </head>
+  <style lang="scss">
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      width: 100%;
+      height: 100%;
+    }
+    #home {
+      width: calc(100% - 25px);
+      height: calc(100vh - 20px);
+      font-family: MiSans;
+      margin: 10px;
+      padding: 20px;
+      background: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+
+      .title {
+        width: 100%;
+        color: #212529;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .search {
+        width: 100%;
+        margin: 20px 0 15px;
+        display: flex;
+        /* justify-content: flex-end; */
+        align-items: flex-end;
+
+        & > div {
+          display: flex;
+          flex-direction: column;
+          margin-right: 10px;
+
+          & > p {
+            color: #444444;
+            margin-bottom: 7px;
+            padding-left: 5px;
+          }
+
+          & > .el-select {
+            & > .is-focus {
+              .el-input__inner {
+                border-color: #3381f6;
+              }
+            }
+
+            .el-input__inner {
+              border: 1px solid transparent;
+              background-color: #e9ecef;
+              color: #3381f6;
+              font-weight: 700;
+              border-radius: 8px;
+            }
+          }
+
+          & > div {
+            display: flex;
+            align-items: center;
+
+            & > .el-date-editor {
+              width: 160px;
+
+              &:first-child {
+                margin-right: 10px;
+              }
+
+              .el-input__inner {
+                background: #e9ecef;
+                color: #3381f6;
+                font-weight: 700;
+                border-radius: 8px;
+                border: 1px solid transparent;
+
+                &:focus {
+                  border-color: #3381f6;
+                }
+              }
+
+              & > .is-focus {
+                .el-input__inner {
+                }
+              }
+            }
+          }
+
+          & > .el-date-editor {
+            width: 370px;
+            border-radius: 8px;
+            background: #e9ecef;
+            border: 1px solid transparent;
+
+            .el-range-input {
+              background: #e9ecef;
+              color: #3381f6;
+              font-weight: 700;
+            }
+
+            .el-range-separator {
+              padding: 0;
+            }
+          }
+
+          & > .is-active {
+            border-color: #3381f6;
+          }
+        }
+
+        /* & > .el-select {
+          & > .is-focus {
+            .el-input__inner {
+              border-color: #3381f6;
+            }
+          }
+
+          .el-input__inner {
+            border: 1px solid transparent;
+            background-color: #e9ecef;
+            color: #3381f6;
+            font-weight: 700;
+            border-radius: 8px;
+          }
+        } */
+
+        & > .el-date-editor {
+          width: 400px;
+          border-radius: 8px;
+          background: #e9ecef;
+          border: 1px solid transparent;
+          margin: 0 15px;
+
+          .el-range-input {
+            background: #e9ecef;
+            color: #3381f6;
+            font-weight: 700;
+          }
+
+          .el-range-separator {
+            padding: 0;
+          }
+        }
+
+        & > .is-active {
+          border-color: #3381f6;
+        }
+      }
+
+      .content {
+        flex: 1;
+        background-color: red;
+        margin-top: 20px;
+        border-radius: 16px;
+        background: #ffffff;
+        box-shadow: 0px 2px 16px 0px #8894a133;
+        padding: 20px;
+
+        & > div {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    .el-select-dropdown {
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0px 6px 40px 0px #7991ad4c;
+      border: none;
+      padding: 0 10px;
+
+      .el-select-dropdown__item {
+        padding: 0 10px;
+        color: #252641;
+      }
+
+      .selected {
+        color: #3381f6;
+      }
+    }
+  </style>
+  <body>
+    <div id="home">
+      <div class="title">历史趋势</div>
+      <div class="search">
+        <div>
+          <p>类型选择</p>
+          <el-select
+            v-model="device"
+            placeholder="请选择"
+            @change="getParamsOptions"
+          >
+            <el-option
+              v-for="item in deviceOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div>
+          <p>类型参数</p>
+          <el-select v-model="params" placeholder="请选择">
+            <el-option
+              v-for="item in paramsOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <!-- <div>
+          <p>指令参数</p>
+          <el-select v-model="instruction" placeholder="请选择">
+            <el-option
+              v-for="item in instructionOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div> -->
+        <!-- <div>
+          <p>特征温度</p>
+          <el-select v-model="temperature" placeholder="请选择">
+            <el-option
+              v-for="item in temperatureOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div>
+          <p>SCOP</p>
+          <el-select v-model="scop" placeholder="请选择">
+            <el-option
+              v-for="item in scopOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div> -->
+        <div>
+          <p>时段选择</p>
+          <el-date-picker
+            v-model="selectDate"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          >
+          </el-date-picker>
+        </div>
+
+        <el-button type="primary" @click="setChartsData">查询</el-button>
+        <el-button @click="reset">重置</el-button>
+      </div>
+      <div class="content">
+        <div ref="myCharts"></div>
+      </div>
+    </div>
+    <script>
+      Vue.config.productionTip = false;
+      const vm = new Vue({
+        el: "#home",
+        data() {
+          return {
+            device: "1",
+            deviceOptions: [
+              { value: "1", label: "L-1磁悬浮" },
+              { value: "2", label: "L-2磁悬浮" },
+              { value: "3", label: "L-3螺杆" },
+              { value: "4", label: "L-4螺杆" },
+              { value: "5", label: "指令参数" },
+              { value: "6", label: "室内特征温度" },
+              { value: "7", label: "SCOP" },
+            ],
+            params: "",
+            paramsOptions: [],
+            instruction: "",
+            instructionOptions: [
+              { value: "1", label: "供水温度" },
+              { value: "2", label: "供回水温差" },
+              { value: "3", label: "L-1磁悬浮流量" },
+              { value: "4", label: "L-2磁悬浮流量" },
+              { value: "5", label: "L-3螺杆流量" },
+              { value: "6", label: "L-4螺杆流量" },
+            ],
+            selectDate: [],
+            myCharts: null,
+            chartsData: {},
+          };
+        },
+        mounted() {
+          this.getParamsOptions();
+          this.initCharts();
+        },
+        methods: {
+          /**
+           * 获取参数选择下拉框数据
+           */
+          getParamsOptions() {
+            switch (this.device) {
+              case "1":
+                this.paramsOptions = [
+                  { value: "L-1制冷量", label: "L-1制冷量" },
+                  { value: "L-1负载量", label: "L-1负载量" },
+                  { value: "L-1耗电量", label: "L-1耗电量" },
+                  { value: "L-1COP", label: "L-1COP" },
+                ];
+                break;
+              case "2":
+                this.paramsOptions = [
+                  { value: "L-2制冷量", label: "L-2制冷量" },
+                  { value: "L-2负载量", label: "L-2负载量" },
+                  { value: "L-2耗电量", label: "L-2耗电量" },
+                  { value: "L-2COP", label: "L-2COP" },
+                ];
+                break;
+              case "3":
+                this.paramsOptions = [
+                  { value: "L-3制冷量", label: "L-3制冷量" },
+                  { value: "L-3负载量", label: "L-3负载量" },
+                  { value: "L-3耗电量", label: "L-3耗电量" },
+                  { value: "L-3COP", label: "L-3COP" },
+                ];
+                break;
+              case "4":
+                this.paramsOptions = [
+                  { value: "L-4制冷量", label: "L-4制冷量" },
+                  { value: "L-4负载量", label: "L-4负载量" },
+                  { value: "L-4耗电量", label: "L-4耗电量" },
+                  { value: "L-4COP", label: "L-4COP" },
+                ];
+                break;
+              case "5":
+                this.paramsOptions = [
+                  { value: "供水温度", label: "供水温度" },
+                  { value: "供回水温差", label: "供回水温差" },
+                  { value: "L-1磁悬浮流量", label: "L-1磁悬浮流量" },
+                  { value: "L-2磁悬浮流量", label: "L-2磁悬浮流量" },
+                  { value: "L-3螺杆流量", label: "L-3螺杆流量" },
+                  { value: "L-4螺杆流量", label: "L-4螺杆流量" },
+                ];
+                break;
+              case "6":
+                this.paramsOptions = [
+                  { value: "室内特征温度", label: "室内特征温度" },
+                ];
+                break;
+              case "7":
+                this.paramsOptions = [{ value: "SCOP", label: "SCOP" }];
+                break;
+            }
+            this.params = this.paramsOptions[0].value;
+          },
+
+          /**
+           * 重置
+           */
+          reset() {
+            this.device = "1";
+            this.getParamsOptions();
+            this.instruction = "";
+            this.temperature = "";
+            this.scop = "";
+            // this.param = "";
+            this.selectDate = [];
+            this.setChartsData();
+          },
+
+          /**
+           * 初始化图表
+           */
+          initCharts() {
+            this.myCharts = echarts.init(this.$refs.myCharts);
+            this.chartsData = {
+              title: [],
+              tooltip: {
+                trigger: "axis",
+              },
+              legend: {
+                data: ["熵值法", "平均值法", "最高值法"],
+                right: 0,
+                icon: "circle",
+                itemGap: 30,
+                itemHeight: 10,
+                textStyle: {
+                  color: "#212529",
+                  fontSize: 16,
+                  padding: [0, 0, 0, -8],
+                },
+              },
+              grid: {
+                top: "8%",
+                left: "1%",
+                right: "1%",
+                bottom: "1%",
+                containLabel: true,
+              },
+              xAxis: {
+                type: "category",
+                boundaryGap: false,
+                data: ["1日", "2日", "3日", "4日", "5日", "6日", "7日"],
+                axisLine: {
+                  lineStyle: {
+                    color: "#dbdbdb",
+                  },
+                },
+                axisLabel: {
+                  textStyle: {
+                    color: "#6C757D",
+                  },
+                },
+                splitLine: {
+                  show: true, // 是否显示分隔线。默认数值轴显示，类目轴不显示
+                  color: ["#ccc"], // 分隔线颜色，可以设置成单个颜色，也可以设置成颜色数组，分隔线会按数组中颜色的顺序依次循环设置颜色
+                  width: 1, // 分隔线线宽
+                  type: "solid", // 坐标轴线线的类型（'solid'，实线类型；'dashed'，虚线类型；'dotted',点状类型）
+                },
+              },
+              yAxis: {
+                type: "value",
+                axisLine: {
+                  show: true, // 是否显示坐标轴轴线
+                  // symbol: ["none", "arrow"], // 轴线两端箭头，两个值，none表示没有箭头，arrow表示有箭头
+                  // symbolSize: [10, 15], // 轴线两端箭头大小，数值一表示宽度，数值二表示高度
+                  lineStyle: {
+                    color: "#dbdbdb", // 坐标轴线线的颜色
+                    width: "1", // 坐标轴线线宽
+                    type: "solid", // 坐标轴线线的类型（'solid'，实线类型；'dashed'，虚线类型；'dotted',点状类型）
+                  },
+                },
+                axisLabel: {
+                  show: true,
+                  formatter: "{value}k",
+                  margin: 20,
+                  textStyle: {
+                    color: "#000",
+                    fontSize: 16,
+                  },
+                },
+              },
+              // series: [
+              //   {
+              //     name: "2025/04",
+              //     type: "line",
+              //     // stack: "Total",
+              //     color: "#3F8CFF",
+              //     areaStyle: {
+              //       normal: {
+              //         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              //           {
+              //             offset: 0,
+              //             color: "rgb(63, 140, 255)",
+              //           },
+              //           {
+              //             offset: 0.2,
+              //             color: "rgb(63, 140, 255, 0.2)",
+              //           },
+              //           {
+              //             offset: 1,
+              //             color: "rgb(63, 140, 255, 0.0)",
+              //           },
+              //         ]),
+              //       },
+              //     },
+              //     symbol: false,
+              //     symbolSize: 0,
+              //     // smooth: true,
+              //     data: [120, 132, 101, 134, 90, 155, 170],
+              //   },
+              // ],
+              series: [
+                {
+                  name: "熵值法",
+                  type: "line",
+                  // stack: "Total",
+                  // color: "#3F8CFF",
+                  color: "#3F8CFF",
+                  areaStyle: {
+                    normal: {
+                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                          offset: 0,
+                          color: "rgb(63, 140, 255)",
+                        },
+                        {
+                          offset: 0.2,
+                          color: "rgb(63, 140, 255, 0.2)",
+                        },
+                        {
+                          offset: 1,
+                          color: "rgb(63, 140, 255, 0.0)",
+                        },
+                      ]),
+                    },
+                  },
+                  symbol: false,
+                  symbolSize: 0,
+                  // smooth: true,
+                  data: [120, 132, null, null, null, 155, 170],
+                },
+                {
+                  name: "平均值法",
+                  type: "line",
+                  // stack: "Total",
+                  // color: "#3F8CFF",
+                  color: "#A806FF",
+                  areaStyle: {
+                    normal: {
+                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                          offset: 0,
+                          color: "rgb(168, 6, 255)",
+                        },
+                        {
+                          offset: 0.2,
+                          color: "rgb(168, 6, 255, 0.2)",
+                        },
+                        {
+                          offset: 1,
+                          color: "rgb(168, 6, 255, 0.0)",
+                        },
+                      ]),
+                    },
+                  },
+                  symbol: false,
+                  symbolSize: 0,
+                  // smooth: true,
+                  // data: result.type2,
+                  data: [null, null, 101, 134, 90, null, null],
+                },
+                {
+                  name: "最高值法",
+                  type: "line",
+                  // stack: "Total",
+                  // color: "#3F8CFF",
+                  color: "#F2A64F",
+                  areaStyle: {
+                    normal: {
+                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                          offset: 0,
+                          color: "rgb(242, 166, 79)",
+                        },
+                        {
+                          offset: 0.2,
+                          color: "rgb(242, 166, 79, 0.2)",
+                        },
+                        {
+                          offset: 1,
+                          color: "rgb(242, 166, 79, 0.0)",
+                        },
+                      ]),
+                    },
+                  },
+                  symbol: false,
+                  symbolSize: 0,
+                  // smooth: true,
+                  // data: result.type3,
+                  data: [null, 132, 101, null, 90, 155, null],
+                },
+              ],
+            };
+            this.myCharts.setOption(this.chartsData, true);
+          },
+
+          /**
+           * 更新图表数据
+           */
+          setChartsData() {
+            let data = [
+              {
+                data: 120,
+                type: 1,
+              },
+              {
+                data: 132,
+                type: 2,
+              },
+              {
+                data: 101,
+                type: 3,
+              },
+              {
+                data: 134,
+                type: 3,
+              },
+              {
+                data: 90,
+                type: 2,
+              },
+              {
+                data: 155,
+                type: 3,
+              },
+              {
+                data: 170,
+                type: 3,
+              },
+            ];
+            // const result = {};
+            // data.forEach((item) => {
+            //   const typeKey = `type${item.type}`;
+            //   if (!result[typeKey]) {
+            //     result[typeKey] = Array.from(
+            //       { length: data.length },
+            //       // () => "-"
+            //       () => null
+            //     );
+            //   }
+            // });
+
+            // // 填充数据（同上）
+            // data.forEach((item, index) => {
+            //   const typeKey = `type${item.type}`;
+            //   result[typeKey][index] = item.data;
+            // });
+
+            const result = {
+              type1: Array.from({ length: data.length }, () => "-"),
+              type2: Array.from({ length: data.length }, () => "-"),
+              type3: Array.from({ length: data.length }, () => "-"),
+            };
+
+            data.forEach((item, index) => {
+              const typeKey = `type${item.type}`;
+
+              // 规则1：当前元素的值直接填充
+              result[typeKey][index] = item.data;
+
+              // 规则2：如果当前元素不是最后一个，填充后一个位置
+              if (index < data.length - 1) {
+                result[typeKey][index + 1] = data[index + 1].data;
+              }
+
+              // 规则3：如果当前元素是最后一个，且前一个元素类型不同，填充前一个位置
+              if (index === data.length - 1 && index > 0) {
+                const prevType = data[index - 1].type;
+                if (prevType !== item.type) {
+                  result[typeKey][index - 1] = data[index - 1].data;
+                }
+              }
+            });
+
+            console.log(result);
+
+            const series = [
+              {
+                name: "熵值法",
+                type: "line",
+                // stack: "Total",
+                // color: "#3F8CFF",
+                color: "#3F8CFF",
+                areaStyle: {
+                  normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      {
+                        offset: 0,
+                        color: "rgb(63, 140, 255)",
+                      },
+                      {
+                        offset: 0.2,
+                        color: "rgb(63, 140, 255, 0.2)",
+                      },
+                      {
+                        offset: 1,
+                        color: "rgb(63, 140, 255, 0.0)",
+                      },
+                    ]),
+                  },
+                },
+                symbol: false,
+                symbolSize: 0,
+                // smooth: true,
+                data: result.type1,
+                // data: [120, 132, null, null, null, null, null],
+              },
+              {
+                name: "平均值法",
+                type: "line",
+                // stack: "Total",
+                // color: "#3F8CFF",
+                color: "#A806FF",
+                areaStyle: {
+                  normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      {
+                        offset: 0,
+                        color: "rgb(168, 6, 255)",
+                      },
+                      {
+                        offset: 0.2,
+                        color: "rgb(168, 6, 255, 0.2)",
+                      },
+                      {
+                        offset: 1,
+                        color: "rgb(168, 6, 255, 0.0)",
+                      },
+                    ]),
+                  },
+                },
+                symbol: false,
+                symbolSize: 0,
+                // smooth: true,
+                data: result.type2,
+                // data: [null, 132, 101, null, null, null, null],
+              },
+              {
+                name: "最高值法",
+                type: "line",
+                // stack: "Total",
+                // color: "#3F8CFF",
+                color: "#F2A64F",
+                areaStyle: {
+                  normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      {
+                        offset: 0,
+                        color: "rgb(242, 166, 79)",
+                      },
+                      {
+                        offset: 0.2,
+                        color: "rgb(242, 166, 79, 0.2)",
+                      },
+                      {
+                        offset: 1,
+                        color: "rgb(242, 166, 79, 0.0)",
+                      },
+                    ]),
+                  },
+                },
+                symbol: false,
+                symbolSize: 0,
+                // smooth: true,
+                data: result.type3,
+                // data: [null, null, 101, 134, null, null, null],
+              },
+            ];
+            console.log(series);
+
+            this.chartsData.series = series;
+            this.myCharts.setOption(this.chartsData, true);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
