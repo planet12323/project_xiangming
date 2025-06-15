@@ -303,12 +303,28 @@ def get_manual_parameters() -> list:
     return result if result else None
 
 
+def get_display_results():
+    """
+    从display_results表中获取最新时间戳的数据并返回selected_points和cal_method
+    返回元组：(selected_points, cal_method)
+    """
+    query = """
+            WITH latest_timestamp AS (SELECT MAX(time_stamp) AS max_ts
+                                      FROM display_results)
+            SELECT selected_points, cal_method
+            FROM display_results
+                     JOIN latest_timestamp ON display_results.time_stamp = latest_timestamp.max_ts \
+            """
+    with get_db_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            result = cursor.fetchone()
+    return result if result else (None, None)
+
+
 if __name__ == '__main__':
     # print(get_point_info())
     # print(get_command_info())
     # print(get_analysis_info())
-    res = get_manual_parameters()
+    res = get_display_results()
     print(res)
-    for i in res:
-        supply_temp_upper, return_temp_lower, unit_flow, cal_frequency = i
-        print(supply_temp_upper, return_temp_lower, unit_flow, cal_frequency)

@@ -5,11 +5,15 @@ from config import *
 
 
 def fetch_settings() -> Config:
-    seleted_points, cal_method = get_points_calmethod()  #
+    seleted_points, cal_method = get_display_results()  #
     supply_temp_upper, return_temp_lower, unit_flow, cal_frequency = get_manual_parameters()[0]
     conf = Config(selected_points=seleted_points, cal_method=cal_method, supply_temp_upper=supply_temp_upper,
                   return_temp_lower=return_temp_lower, unit_flow=unit_flow, cal_frequency=cal_frequency)
     return conf
+
+
+def fetch_data(selected_points)->Dict:
+    data =
 
 
 if __name__ == '__main__':

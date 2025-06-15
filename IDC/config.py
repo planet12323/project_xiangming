@@ -1,4 +1,5 @@
 from typing import List, Dict, Optional, Any
+
 class Config:
     """系统配置类，用于存储和管理系统参数"""
 
@@ -28,6 +29,9 @@ class Config:
         self.return_temp_lower = return_temp_lower
         self.unit_flow = unit_flow or {}
         self.cal_frequency = cal_frequency
+        self.GetDeviceList = 'http://192.168.1.246:10088/api/GetDeviceList'
+        self.GetRealTimeData = 'http://192.168.1.246:10088/api/GetRealTimeData'
+
 
     def to_dict(self) -> Dict[str, Any]:
         """将配置对象转换为字典"""
