@@ -5,27 +5,15 @@ import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 from typing import Dict
 
-# 读取Excel文件
-excel_file1 = "1117_load.xls"  # 负荷预测输入数据集
-excel_file2 = "1117_temp.xls"  # 温度预测输入数据集，设定温度也在这里面
-excel_file3 = "1117_weather.xls"  # 气象预报输入数据集
-dataset1 = pd.read_excel(excel_file1, usecols="A:E", header=None)  # batch * [Qcooling, Tin, PIT, Outdoor, Outdoor_t-1]
-dataset2 = pd.read_excel(excel_file2, usecols="A:H", header=None)  # batch * [Outdoor_t+1, Qcooling, Tin, Tsupply, PIT, Outdoor, Qcooling_t-1, ___]
-data3 = np.array(pd.read_excel(excel_file3, usecols="A", header=None)) # batch * [Outdoor]
-print(dataset1.shape)
-print(dataset2.shape)
-print(data3.shape)
 # 数据归一化处理
-scaler = MinMaxScaler()
-data1_scaled = scaler.fit_transform(dataset1)
-data2_scaled = scaler.fit_transform(dataset2)
+
 
 # 参数
 batchsize = 1  # 批处理大小，预测模型里是32
 step = 5  # 时间步数
 loaddim = 5  # 负荷预测模型输入维度
-tempdim = 7  # 温度预测模型输入维度
-rows_to_predict = 30  # 进行预测的迭代次数，序列长度为step，步长为1
+tempdim = 6  # 温度预测模型输入维度
+rows_to_predict = 3  # 进行预测的迭代次数，序列长度为step，步长为1
 nextTin = 0  # 中间变量Tin(t+1)，具体数值不重要
 Beta = 0.000008  # 可变参数β
 Alpha = 1 - Beta  # 可变参数α
@@ -94,15 +82,15 @@ def PphCal4(Cooling4, nextTreturn, nextTout):
 
 
 # 测试热泵模型
-print("热泵模型测试结果:")
-power1 = PphCal1(173.34, 14.55, 37.91)
-print("磁悬浮1功率:", power1)
-power2 = PphCal2(191.78, 14.59, 37.91)
-print("磁悬浮2功率:", power2)
-power3 = PphCal3(646.4, 14.31, 37.91)
-print("螺杆1功率:", power3)
-power4 = PphCal4(587.45, 14.58, 37.91)
-print("螺杆2功率:", power4)
+# print("热泵模型测试结果:")
+# power1 = PphCal1(173.34, 14.55, 37.91)
+# print("磁悬浮1功率:", power1)
+# power2 = PphCal2(191.78, 14.59, 37.91)
+# print("磁悬浮2功率:", power2)
+# power3 = PphCal3(646.4, 14.31, 37.91)
+# print("螺杆1功率:", power3)
+# power4 = PphCal4(587.45, 14.58, 37.91)
+# print("螺杆2功率:", power4)
 
 
 ################## 水泵能耗方程：##################
@@ -136,27 +124,22 @@ def Cost(x, Alpha, Beta, nextTset, nextTout, Cooling, tempdata):
 
     # 按流量比例分配冷量
     total_flow = total_volume
-    Cooling_screw1 = Cooling * nextVscrew1 / total_flow
-    Cooling_screw2 = Cooling * nextVscrew2 / total_flow
-    Cooling_maglev1 = Cooling * nextVmaglev1 / total_flow
-    Cooling_maglev2 = Cooling * nextVmaglev2 / total_flow
+    Cooling_screw1 = Cooling * (nextVscrew1 / total_flow)
+    Cooling_screw2 = Cooling * (nextVscrew2 / total_flow)
+    Cooling_maglev1 = Cooling * (nextVmaglev1 / total_flow)
+    Cooling_maglev2 = Cooling * (nextVmaglev2 / total_flow)
 
-    # 计算四个机组的功率
     Php1 = PphCal1(Cooling_maglev1, nextTreturn, nextTout)
     Php2 = PphCal2(Cooling_maglev2, nextTreturn, nextTout)
-    Php3 = PphCal4(Cooling_screw1, nextTreturn, nextTout)
+    Php3 = PphCal3(Cooling_screw1, nextTreturn, nextTout)
     Php4 = PphCal4(Cooling_screw2, nextTreturn, nextTout)
 
-    # 温度预测部分 - 修复tempdata的形状问题
-    # 确保tempdata是(5, 7)的形状
+    # 温度预测部分
     if tempdata.shape != (step, tempdim):
         tempdata = tempdata.reshape((step, tempdim))
 
-    # 使用优化后的供温更新最后一个时间步的供温值
     tempdata_modified = tempdata.copy()
-    tempdata_modified[-1, 6] = nextTsupply  # 第6列是供温
-
-    # 重塑为(1, 5, 7)
+    tempdata_modified[-1, 5] = nextTsupply
     tempinput = tempdata_modified.reshape((batchsize, step, tempdim))
 
     global nextTin
@@ -164,12 +147,15 @@ def Cost(x, Alpha, Beta, nextTset, nextTout, Cooling, tempdata):
     nextTin_scaled = tempmodel.predict(tempinput, verbose=0)[0][0]
     nextTin = nextTin_scaled * (T_max - T_min) + T_min
 
-    # 计算总成本
+    # 添加功率非负约束
+    if any(p < 0 for p in [Php1, Php2, Php3, Php4]):
+        return float('inf')  # 返回极大值表示无效解
+
     cost = Alpha * (nextTset - nextTin) ** 2 + Beta * (Php1 + Php2 + Php3 + Php4 + Pwp * 3) ** 2
     return cost
 
 
-def main_idc() -> Dict:
+def main_idc(data1, data2, data3) -> Dict:
     print("\n开始主优化程序...")
     x = []
     cf = []
@@ -182,7 +168,9 @@ def main_idc() -> Dict:
     pu = []
     tot = []
     deltaT_list = []  # 存储供回水温差
-
+    scaler = MinMaxScaler()
+    data1_scaled = scaler.fit_transform(data1)
+    data2_scaled = scaler.fit_transform(data2)
     for i in range(rows_to_predict):
         print('滚动次数：', i)
         # 获取温度预测输入数据 (5个时间步，每个时间步7个特征)
@@ -224,13 +212,12 @@ def main_idc() -> Dict:
         Cooling_maglev2 = Cooling * nextVmaglev2 / total_volume
 
         # 计算功率
-        power_screw1 = PphCal4(Cooling_screw1, nextTreturn, nextTout)
+        power_screw1 = PphCal3(Cooling_screw1, nextTreturn, nextTout)
         power_screw2 = PphCal4(Cooling_screw2, nextTreturn, nextTout)
         power_maglev1 = PphCal1(Cooling_maglev1, nextTreturn, nextTout)
         power_maglev2 = PphCal2(Cooling_maglev2, nextTreturn, nextTout)
         power_pump = PwpCal(volume_pump)
         power_total = (power_screw1 + power_maglev1 + power_screw2 + power_maglev2) + 3 * power_pump
-
         # 存储结果
         deltaT_list.append(deltaT)
         print('供温，温差，螺杆1流量，螺杆2流量，磁悬浮1流量，磁悬浮2流量:', xopt)
@@ -273,12 +260,12 @@ def main_idc() -> Dict:
     maglev2_flow = [arr[5] for arr in x]
 
     result = {
-        'Supply': supply_temp,
-        'DeltaT': deltaT,
-        'Vscrew1': screw1_flow,
-        'Vscrew2': screw2_flow,
-        'Vmaglev1': maglev1_flow,
-        'Vmaglev2': maglev2_flow,
+        'Supply': np.mean(supply_temp),
+        'DeltaT': np.mean(deltaT),
+        'Vscrew1': np.mean(screw1_flow),
+        'Vscrew2': np.mean(screw2_flow),
+        'Vmaglev1': np.mean(maglev1_flow),
+        'Vmaglev2': np.mean(maglev2_flow),
         'Cooling': co,
         'Temp': tin,
         'Pscrew1': sc1,
@@ -295,4 +282,17 @@ def main_idc() -> Dict:
 
 
 if __name__ == '__main__':
-    print('hello')
+    # 读取Excel文件
+    excel_file1 = "1117_load.xls"  # 负荷预测输入数据集
+    excel_file2 = "1117_temp.xls"  # 温度预测输入数据集，设定温度也在这里面
+    excel_file3 = "1117_weather.xls"  # 气象预报输入数据集
+    data1 = pd.read_excel(excel_file1, usecols="A:E", header=None)  # batch * [Qcooling, Tin, PIT, Outdoor, Outdoor_t-1]
+    data2 = pd.read_excel(excel_file2, usecols="A:G",
+                          header=None)  # batch * [ Qcooling, Tin, Tsupply, PIT, Outdoor, Qcooling_t-1, Tset]
+    data3 = np.array(pd.read_excel(excel_file3, usecols="A", header=None))  # batch * [Outdoor]
+    print(data1.shape)
+    print(data2.shape)
+    print(data3.shape)
+    result = main_idc(data1, data2, data3)
+    print(result)
+    print('j')

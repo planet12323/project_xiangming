@@ -3,17 +3,9 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.53">
     <root id="1">
       <DateStyle>ymd</DateStyle>
-      <Grants>1||-9223372036854775808|c|G
-1||10|c|G
-1||10|C|G
-1||10|T|G
-4||-9223372036854775808|c|G
-4||10|c|G
-4||10|C|G
-4||10|T|G</Grants>
-      <IntrospectionStateNumber>791</IntrospectionStateNumber>
+      <IntrospectionStateNumber>830</IntrospectionStateNumber>
       <ServerVersion>15.12</ServerVersion>
-      <StartupTime>1749781670</StartupTime>
+      <StartupTime>1749904509</StartupTime>
       <TimeZones>true ACDT
 true ACSST
 false ACST
@@ -814,7 +806,7 @@ false Zulu
 13183||10|C|G
 13183||-9223372036854775808|U|G
 13183||10|U|G</Grants>
-      <IntrospectionStateNumber>791</IntrospectionStateNumber>
+      <IntrospectionStateNumber>830</IntrospectionStateNumber>
       <ObjectId>123456</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -4227,756 +4219,677 @@ false Zulu
     <schema id="262" parent="3" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>791</IntrospectionStateNumber>
-      <LastIntrospectionLocalTimestamp>2025-06-13.06:25:06</LastIntrospectionLocalTimestamp>
+      <IntrospectionStateNumber>830</IntrospectionStateNumber>
+      <LastIntrospectionLocalTimestamp>2025-06-15.10:30:53</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>518</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
     </schema>
     <table id="263" parent="262" name="analysis_info">
-      <ObjectId>24713</ObjectId>
-      <StateNumber>767</StateNumber>
+      <ObjectId>32805</ObjectId>
+      <StateNumber>794</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
     <table id="264" parent="262" name="analysis_results">
-      <ObjectId>24666</ObjectId>
-      <StateNumber>766</StateNumber>
+      <ObjectId>32774</ObjectId>
+      <StateNumber>794</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
     <table id="265" parent="262" name="command_data">
-      <ObjectId>24631</ObjectId>
-      <StateNumber>766</StateNumber>
+      <ObjectId>32834</ObjectId>
+      <StateNumber>794</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
     <table id="266" parent="262" name="command_info">
-      <ObjectId>24705</ObjectId>
-      <StateNumber>767</StateNumber>
+      <ObjectId>32811</ObjectId>
+      <StateNumber>794</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
     <table id="267" parent="262" name="daily_analysis">
-      <ObjectId>24683</ObjectId>
-      <StateNumber>766</StateNumber>
+      <ObjectId>32828</ObjectId>
+      <StateNumber>794</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
     <table id="268" parent="262" name="display_results">
-      <ObjectId>24650</ObjectId>
-      <StateNumber>766</StateNumber>
+      <ObjectId>32799</ObjectId>
+      <StateNumber>794</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
-    <table id="269" parent="262" name="hourly_analysis">
-      <ObjectId>24677</ObjectId>
-      <StateNumber>766</StateNumber>
+    <table id="269" parent="262" name="history_trend">
+      <ObjectId>32816</ObjectId>
+      <StateNumber>794</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
-    <table id="270" parent="262" name="manual_parameters">
-      <ObjectId>24658</ObjectId>
-      <StateNumber>766</StateNumber>
+    <table id="270" parent="262" name="hourly_analysis">
+      <ObjectId>32822</ObjectId>
+      <StateNumber>794</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
-    <table id="271" parent="262" name="monthly_analysis">
-      <ObjectId>24689</ObjectId>
-      <StateNumber>766</StateNumber>
+    <table id="271" parent="262" name="manual_parameters">
+      <ObjectId>32786</ObjectId>
+      <StateNumber>794</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
-    <table id="272" parent="262" name="point_info">
-      <ObjectId>24606</ObjectId>
-      <StateNumber>766</StateNumber>
+    <table id="272" parent="262" name="model_input">
+      <ObjectId>32863</ObjectId>
+      <StateNumber>828</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
-    <table id="273" parent="262" name="raw_collected_data">
-      <ObjectId>24612</ObjectId>
-      <StateNumber>766</StateNumber>
+    <table id="273" parent="262" name="monthly_analysis">
+      <ObjectId>32840</ObjectId>
+      <StateNumber>794</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
-    <table id="274" parent="262" name="yearly_analysis">
-      <ObjectId>24695</ObjectId>
-      <StateNumber>766</StateNumber>
+    <table id="274" parent="262" name="point_info">
+      <ObjectId>32792</ObjectId>
+      <StateNumber>794</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
-    <column id="275" parent="263" name="analysis_id">
+    <table id="275" parent="262" name="raw_collected_data">
+      <ObjectId>32780</ObjectId>
+      <StateNumber>794</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>postgres</OwnerName>
+    </table>
+    <table id="276" parent="262" name="yearly_analysis">
+      <ObjectId>32768</ObjectId>
+      <StateNumber>794</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>postgres</OwnerName>
+    </table>
+    <column id="277" parent="263" name="analysis_id">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>767</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>varchar(16)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="276" parent="263" name="analysis_name">
+    <column id="278" parent="263" name="analysis_name">
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>767</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>varchar(64)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="277" parent="263" name="analysis_formula">
+    <column id="279" parent="263" name="analysis_formula">
       <Position>3</Position>
-      <StateNumber>767</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>text|0s</StoredType>
       <TypeId>25</TypeId>
     </column>
-    <column id="278" parent="263" name="created_at">
+    <column id="280" parent="263" name="created_at">
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>4</Position>
-      <StateNumber>767</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <index id="279" parent="263" name="analysis_info_pkey">
-      <ColNames>analysis_id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24719</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>767</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-      <CollationNames>default</CollationNames>
-      <CollationIds>100</CollationIds>
-      <CollationParentNames>pg_catalog</CollationParentNames>
-    </index>
-    <key id="280" parent="263" name="analysis_info_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24720</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>767</StateNumber>
-      <UnderlyingIndexId>24719</UnderlyingIndexId>
-    </key>
     <column id="281" parent="264" name="time_stamp">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
     <column id="282" parent="264" name="analysis_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>varchar(16)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
     <column id="283" parent="264" name="analysis_value">
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>numeric(20,5 digit)|0s</StoredType>
+      <StateNumber>794</StateNumber>
+      <StoredType>numeric|0s</StoredType>
       <TypeId>1700</TypeId>
     </column>
     <column id="284" parent="264" name="created_at">
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>4</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <index id="285" parent="264" name="analysis_results_pkey">
-      <ColNames>time_stamp
-analysis_id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24670</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-      <CollationIds>
-100</CollationIds>
-      <CollationParentNames>
-pg_catalog</CollationParentNames>
-      <CollationNames>
-default</CollationNames>
-    </index>
-    <index id="286" parent="264" name="idx_ar_timestamp">
-      <ColNames>time_stamp</ColNames>
-      <ObjectId>24703</ObjectId>
-      <ReverseColNames>time_stamp</ReverseColNames>
-      <StateNumber>766</StateNumber>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="287" parent="264" name="analysis_results_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24671</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <UnderlyingIndexId>24670</UnderlyingIndexId>
-    </key>
-    <column id="288" parent="265" name="time_stamp">
+    <column id="285" parent="265" name="time_stamp">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <column id="289" parent="265" name="command_id">
+    <column id="286" parent="265" name="command_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>varchar(16)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="290" parent="265" name="command_value">
+    <column id="287" parent="265" name="command_value">
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>numeric(20,5 digit)|0s</StoredType>
+      <StateNumber>794</StateNumber>
+      <StoredType>numeric|0s</StoredType>
       <TypeId>1700</TypeId>
     </column>
-    <column id="291" parent="265" name="created_at">
+    <column id="288" parent="265" name="created_at">
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>4</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <index id="292" parent="265" name="command_data_pkey">
-      <ColNames>time_stamp
-command_id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24635</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-      <CollationIds>
-100</CollationIds>
-      <CollationParentNames>
-pg_catalog</CollationParentNames>
-      <CollationNames>
-default</CollationNames>
-    </index>
-    <index id="293" parent="265" name="idx_cpd_timestamp">
-      <ColNames>time_stamp</ColNames>
-      <ObjectId>24702</ObjectId>
-      <ReverseColNames>time_stamp</ReverseColNames>
-      <StateNumber>766</StateNumber>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="294" parent="265" name="command_data_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24636</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <UnderlyingIndexId>24635</UnderlyingIndexId>
-    </key>
-    <column id="295" parent="266" name="command_id">
+    <column id="289" parent="266" name="command_id">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>767</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>varchar(16)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="296" parent="266" name="command_name">
+    <column id="290" parent="266" name="command_name">
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>767</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>varchar(64)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="297" parent="266" name="command_formula">
+    <column id="291" parent="266" name="command_formula">
       <Position>3</Position>
-      <StateNumber>767</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>text|0s</StoredType>
       <TypeId>25</TypeId>
     </column>
-    <column id="298" parent="266" name="created_at">
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    <column id="292" parent="266" name="created_at">
       <Position>4</Position>
-      <StateNumber>767</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <index id="299" parent="266" name="command_info_pkey">
-      <ColNames>command_id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24711</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>767</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-      <CollationNames>default</CollationNames>
-      <CollationIds>100</CollationIds>
-      <CollationParentNames>pg_catalog</CollationParentNames>
-    </index>
-    <key id="300" parent="266" name="command_info_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24712</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>767</StateNumber>
-      <UnderlyingIndexId>24711</UnderlyingIndexId>
-    </key>
-    <column id="301" parent="267" name="time_stamp">
+    <column id="293" parent="266" name="execution_mode">
+      <Position>5</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(10)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="294" parent="267" name="time_stamp">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>timestamp|0s</StoredType>
-      <TypeId>1114</TypeId>
+      <StateNumber>794</StateNumber>
+      <StoredType>date|0s</StoredType>
+      <TypeId>1082</TypeId>
     </column>
-    <column id="302" parent="267" name="device_selection">
+    <column id="295" parent="267" name="device_selection">
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>varchar(64)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="303" parent="267" name="parameter_selection">
+    <column id="296" parent="267" name="parameter_selection">
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>varchar(64)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="304" parent="267" name="analysis_value">
+    <column id="297" parent="267" name="analysis_value">
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>numeric(20,5 digit)|0s</StoredType>
+      <StateNumber>794</StateNumber>
+      <StoredType>numeric|0s</StoredType>
       <TypeId>1700</TypeId>
     </column>
-    <column id="305" parent="267" name="created_at">
+    <column id="298" parent="267" name="created_at">
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>5</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <index id="306" parent="267" name="daily_analysis_pkey">
-      <ColNames>time_stamp</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24687</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="307" parent="267" name="daily_analysis_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24688</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <UnderlyingIndexId>24687</UnderlyingIndexId>
-    </key>
-    <column id="308" parent="268" name="time_stamp">
+    <column id="299" parent="267" name="unit">
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(50)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="300" parent="268" name="time_stamp">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <column id="309" parent="268" name="selected_points">
+    <column id="301" parent="268" name="selected_points">
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>jsonb|0s</StoredType>
       <TypeId>3802</TypeId>
     </column>
-    <column id="310" parent="268" name="cal_method">
+    <column id="302" parent="268" name="cal_method">
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>varchar(32)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="311" parent="268" name="created_at">
+    <column id="303" parent="268" name="created_at">
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>4</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <index id="312" parent="268" name="display_results_pkey">
-      <ColNames>time_stamp</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24656</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <index id="313" parent="268" name="idx_display_timestamp">
-      <ColNames>time_stamp</ColNames>
-      <ObjectId>24704</ObjectId>
-      <ReverseColNames>time_stamp</ReverseColNames>
-      <StateNumber>766</StateNumber>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="314" parent="268" name="display_results_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24657</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <UnderlyingIndexId>24656</UnderlyingIndexId>
-    </key>
-    <column id="315" parent="269" name="time_stamp">
+    <column id="304" parent="268" name="calculated_value">
       <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>timestamp|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <column id="316" parent="269" name="device_selection">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(64)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="317" parent="269" name="parameter_selection">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(64)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="318" parent="269" name="analysis_value">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>numeric(20,5 digit)|0s</StoredType>
+      <Position>5</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>numeric|0s</StoredType>
       <TypeId>1700</TypeId>
     </column>
-    <column id="319" parent="269" name="created_at">
+    <column id="305" parent="269" name="timestamp">
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>timestamp with time zone|0s</StoredType>
+      <TypeId>1184</TypeId>
+    </column>
+    <column id="306" parent="269" name="device_type">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(50)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="307" parent="269" name="device_param">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(50)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="308" parent="269" name="value">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>numeric|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="309" parent="269" name="calculation_method">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(20)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="310" parent="270" name="time_stamp">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>timestamp|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="311" parent="270" name="device_selection">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(64)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="312" parent="270" name="parameter_selection">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(64)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="313" parent="270" name="analysis_value">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>numeric|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="314" parent="270" name="created_at">
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>5</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <index id="320" parent="269" name="hourly_analysis_pkey">
-      <ColNames>time_stamp</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24681</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="321" parent="269" name="hourly_analysis_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24682</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <UnderlyingIndexId>24681</UnderlyingIndexId>
-    </key>
-    <column id="322" parent="270" name="time_stamp">
+    <column id="315" parent="270" name="unit">
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(50)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="316" parent="271" name="time_stamp">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <column id="323" parent="270" name="supply_temp_upper">
+    <column id="317" parent="271" name="supply_temp_upper">
       <Position>2</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>numeric(10,2 digit)|0s</StoredType>
+      <StateNumber>794</StateNumber>
+      <StoredType>numeric|0s</StoredType>
       <TypeId>1700</TypeId>
     </column>
-    <column id="324" parent="270" name="return_temp_lower">
+    <column id="318" parent="271" name="return_temp_lower">
       <Position>3</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>numeric(10,2 digit)|0s</StoredType>
+      <StateNumber>794</StateNumber>
+      <StoredType>numeric|0s</StoredType>
       <TypeId>1700</TypeId>
     </column>
-    <column id="325" parent="270" name="unit_flow">
+    <column id="319" parent="271" name="unit_flow">
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>jsonb|0s</StoredType>
       <TypeId>3802</TypeId>
     </column>
-    <column id="326" parent="270" name="cal_frequency">
+    <column id="320" parent="271" name="cal_frequency">
       <Position>5</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <column id="327" parent="270" name="created_at">
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    <column id="321" parent="271" name="valid_start">
       <Position>6</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <index id="328" parent="270" name="manual_parameters_pkey">
-      <ColNames>time_stamp</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24664</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="329" parent="270" name="manual_parameters_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24665</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <UnderlyingIndexId>24664</UnderlyingIndexId>
-    </key>
-    <column id="330" parent="271" name="time_stamp">
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>timestamp|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <column id="331" parent="271" name="device_selection">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(64)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="332" parent="271" name="parameter_selection">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(64)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="333" parent="271" name="analysis_value">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>numeric(20,5 digit)|0s</StoredType>
-      <TypeId>1700</TypeId>
-    </column>
-    <column id="334" parent="271" name="created_at">
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
-      <Position>5</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>timestamp|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <index id="335" parent="271" name="monthly_analysis_pkey">
-      <ColNames>time_stamp</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24693</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="336" parent="271" name="monthly_analysis_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24694</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <UnderlyingIndexId>24693</UnderlyingIndexId>
-    </key>
-    <column id="337" parent="272" name="property_id">
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(16)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="338" parent="272" name="property_name">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(64)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="339" parent="272" name="device_id">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(16)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="340" parent="272" name="device_name">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(64)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="341" parent="272" name="category_name">
-      <NotNull>1</NotNull>
-      <Position>5</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(64)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="342" parent="272" name="area_name">
-      <NotNull>1</NotNull>
-      <Position>6</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(64)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="343" parent="272" name="value_unit">
-      <NotNull>1</NotNull>
+    <column id="322" parent="271" name="valid_end">
       <Position>7</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(8)|0s</StoredType>
-      <TypeId>1043</TypeId>
+      <StateNumber>794</StateNumber>
+      <StoredType>timestamp|0s</StoredType>
+      <TypeId>1114</TypeId>
     </column>
-    <column id="344" parent="272" name="value_symbol">
-      <NotNull>1</NotNull>
+    <column id="323" parent="271" name="created_at">
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>8</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(16)|0s</StoredType>
-      <TypeId>1043</TypeId>
+      <StateNumber>794</StateNumber>
+      <StoredType>timestamp|0s</StoredType>
+      <TypeId>1114</TypeId>
     </column>
-    <column id="345" parent="272" name="status">
+    <column id="324" parent="271" name="execution_mode">
       <NotNull>1</NotNull>
       <Position>9</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(16)|0s</StoredType>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(10)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="346" parent="272" name="created_at">
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
-      <Position>10</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>timestamp|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <index id="347" parent="272" name="point_info_pkey">
-      <ColNames>property_id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24610</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-      <CollationNames>default</CollationNames>
-      <CollationIds>100</CollationIds>
-      <CollationParentNames>pg_catalog</CollationParentNames>
-    </index>
-    <key id="348" parent="272" name="point_info_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24611</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <UnderlyingIndexId>24610</UnderlyingIndexId>
-    </key>
-    <column id="349" parent="273" name="time_stamp">
+    <column id="325" parent="272" name="time_stamp">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>828</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <column id="350" parent="273" name="property_id">
-      <NotNull>1</NotNull>
+    <column id="326" parent="272" name="qcooling">
       <Position>2</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>varchar(16)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="351" parent="273" name="data_value">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>numeric(20,5 digit)|0s</StoredType>
+      <StateNumber>828</StateNumber>
+      <StoredType>numeric|0s</StoredType>
       <TypeId>1700</TypeId>
     </column>
-    <column id="352" parent="273" name="created_at">
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
-      <Position>4</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>timestamp|0s</StoredType>
-      <TypeId>1114</TypeId>
+    <column id="327" parent="272" name="tin">
+      <Position>3</Position>
+      <StateNumber>828</StateNumber>
+      <StoredType>numeric|0s</StoredType>
+      <TypeId>1700</TypeId>
     </column>
-    <foreign-key id="353" parent="273" name="raw_collected_data_property_id_fkey">
-      <ColNames>property_id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24618</ObjectId>
-      <StateNumber>766</StateNumber>
-      <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>24606</RefTableId>
-    </foreign-key>
-    <index id="354" parent="273" name="raw_collected_data_pkey">
-      <ColNames>time_stamp
-property_id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24616</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-      <CollationIds>
-100</CollationIds>
-      <CollationParentNames>
-pg_catalog</CollationParentNames>
-      <CollationNames>
-default</CollationNames>
-    </index>
-    <index id="355" parent="273" name="idx_rcd_timestamp">
+    <column id="328" parent="272" name="pit">
+      <Position>4</Position>
+      <StateNumber>828</StateNumber>
+      <StoredType>numeric|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="329" parent="272" name="outdoor">
+      <Position>5</Position>
+      <StateNumber>828</StateNumber>
+      <StoredType>numeric|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="330" parent="272" name="tsupply">
+      <Position>6</Position>
+      <StateNumber>828</StateNumber>
+      <StoredType>numeric|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="331" parent="272" name="tset">
+      <Position>7</Position>
+      <StateNumber>828</StateNumber>
+      <StoredType>numeric|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <index id="332" parent="272" name="model_input_pkey">
       <ColNames>time_stamp</ColNames>
-      <ObjectId>24701</ObjectId>
-      <ReverseColNames>time_stamp</ReverseColNames>
-      <StateNumber>766</StateNumber>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>32868</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>828</StateNumber>
+      <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="356" parent="273" name="raw_collected_data_pkey">
+    <index id="333" parent="272" name="idx_timestamp_desc">
+      <ColNames>time_stamp</ColNames>
+      <ObjectId>32870</ObjectId>
+      <ReverseColNames>time_stamp</ReverseColNames>
+      <StateNumber>829</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="334" parent="272" name="model_input_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24617</ObjectId>
+      <ObjectId>32869</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <UnderlyingIndexId>24616</UnderlyingIndexId>
+      <StateNumber>828</StateNumber>
+      <UnderlyingIndexId>32868</UnderlyingIndexId>
     </key>
-    <column id="357" parent="274" name="time_stamp">
+    <column id="335" parent="273" name="time_stamp">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>timestamp|0s</StoredType>
-      <TypeId>1114</TypeId>
+      <StateNumber>794</StateNumber>
+      <StoredType>date|0s</StoredType>
+      <TypeId>1082</TypeId>
     </column>
-    <column id="358" parent="274" name="device_selection">
+    <column id="336" parent="273" name="device_selection">
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>varchar(64)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="359" parent="274" name="parameter_selection">
+    <column id="337" parent="273" name="parameter_selection">
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>varchar(64)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="360" parent="274" name="analysis_value">
+    <column id="338" parent="273" name="analysis_value">
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>766</StateNumber>
-      <StoredType>numeric(20,5 digit)|0s</StoredType>
+      <StateNumber>794</StateNumber>
+      <StoredType>numeric|0s</StoredType>
       <TypeId>1700</TypeId>
     </column>
-    <column id="361" parent="274" name="created_at">
+    <column id="339" parent="273" name="created_at">
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>5</Position>
-      <StateNumber>766</StateNumber>
+      <StateNumber>794</StateNumber>
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <index id="362" parent="274" name="yearly_analysis_pkey">
-      <ColNames>time_stamp</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24699</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="363" parent="274" name="yearly_analysis_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24700</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>766</StateNumber>
-      <UnderlyingIndexId>24699</UnderlyingIndexId>
-    </key>
+    <column id="340" parent="273" name="unit">
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(50)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="341" parent="274" name="property_id">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(16)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="342" parent="274" name="property_name">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(64)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="343" parent="274" name="device_id">
+      <DefaultExpression>NULL::character varying</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(16)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="344" parent="274" name="device_name">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(64)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="345" parent="274" name="category_name">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(64)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="346" parent="274" name="area_name">
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(64)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="347" parent="274" name="value_unit">
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(16)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="348" parent="274" name="value_symbol">
+      <Position>8</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(16)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="349" parent="274" name="status">
+      <NotNull>1</NotNull>
+      <Position>9</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(16)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="350" parent="274" name="created_at">
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+      <Position>10</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>timestamp|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="351" parent="274" name="remark">
+      <Position>11</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="352" parent="275" name="time_stamp">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>timestamp|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="353" parent="275" name="property_id">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(16)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="354" parent="275" name="data_value">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>numeric|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="355" parent="275" name="created_at">
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+      <Position>4</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>timestamp|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="356" parent="276" name="time_stamp">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>date|0s</StoredType>
+      <TypeId>1082</TypeId>
+    </column>
+    <column id="357" parent="276" name="device_selection">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(64)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="358" parent="276" name="parameter_selection">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(64)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="359" parent="276" name="analysis_value">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>numeric|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="360" parent="276" name="created_at">
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+      <Position>5</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>timestamp|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="361" parent="276" name="unit">
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>794</StateNumber>
+      <StoredType>varchar(50)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
   </database-model>
 </dataSource>

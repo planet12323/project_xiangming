@@ -1,7 +1,12 @@
+from collections import defaultdict
+
+import numpy as np
+import pandas as pd
 import psycopg2
 from psycopg2 import pool
 from psycopg2 import extras
 import contextlib
+
 
 DB_CONFIG = {
     'dbname': 'xiangmingtest',
@@ -35,6 +40,7 @@ def update_raw_collected_data(data):
         with conn.cursor() as cursor:
             try:
                 extras.execute_batch(cursor, query, data, page_size=100)
+                conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
@@ -55,6 +61,7 @@ def update_point_info(data):
         with conn.cursor() as cursor:
             try:
                 extras.execute_batch(cursor, query, data, page_size=100)
+                conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
@@ -73,6 +80,7 @@ def update_command_info(data):
         with conn.cursor() as cursor:
             try:
                 extras.execute_batch(cursor, query, data, page_size=100)
+                conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
@@ -91,6 +99,7 @@ def update_command_data(data):
         with conn.cursor() as cursor:
             try:
                 extras.execute_batch(cursor, query, data, page_size=100)
+                conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
@@ -109,6 +118,7 @@ def update_analysis_info(data):
         with conn.cursor() as cursor:
             try:
                 extras.execute_batch(cursor, query, data, page_size=100)
+                conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
@@ -127,6 +137,7 @@ def update_display_results(data):
         with conn.cursor() as cursor:
             try:
                 extras.execute_batch(cursor, query, data, page_size=100)
+                conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
@@ -146,6 +157,7 @@ def update_manual_parameters(data):
         with conn.cursor() as cursor:
             try:
                 extras.execute_batch(cursor, query, data, page_size=100)
+                conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
@@ -164,6 +176,7 @@ def update_analysis_results(data):
         with conn.cursor() as cursor:
             try:
                 extras.execute_batch(cursor, query, data, page_size=100)
+                conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
@@ -182,16 +195,18 @@ def update_hourly_analysis(data):
         with conn.cursor() as cursor:
             try:
                 extras.execute_batch(cursor, query, data, page_size=100)
+                conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
 
 
-def update_daily_analysis(data):
+def update_daily_analysis():
     """
     批量更新daily_analysis表
     data = [(time_stamp, device_selection, parameter_selection, analysis_value)]
     """
+    data=[]
     query = """
         INSERT INTO daily_analysis (time_stamp, device_selection, parameter_selection, analysis_value)
         VALUES (%s, %s, %s, %s)
@@ -200,6 +215,7 @@ def update_daily_analysis(data):
         with conn.cursor() as cursor:
             try:
                 extras.execute_batch(cursor, query, data, page_size=100)
+                conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
@@ -218,6 +234,7 @@ def update_monthly_analysis(data):
         with conn.cursor() as cursor:
             try:
                 extras.execute_batch(cursor, query, data, page_size=100)
+                conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
@@ -226,28 +243,45 @@ def update_monthly_analysis(data):
 def update_yearly_analysis(data):
     """
     批量更新yearly_analysis表
-    data = [(time_stamp, device_selection, parameter_selection, analysis_value)]
+    data = [(time_stamp, device_selection, parameter_selection, analysis_value, unit)]
     """
     query = """
-        INSERT INTO yearly_analysis (time_stamp, device_selection, parameter_selection, analysis_value)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO yearly_analysis (time_stamp, device_selection, parameter_selection, analysis_value, unit)
+        VALUES (%s, %s, %s, %s, %s)
     """
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
             try:
                 extras.execute_batch(cursor, query, data, page_size=100)
+                conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
 
 
-def get_point_info() -> dict:
+def update_model_input(vars):
+    query = f"""
+            INSERT INTO model_input ( time_stamp, qcooling, tin, pit, outdoor, tsupply, tset)
+            VALUES (%s, %s, %s, %s, %s, %s, %s) \
+            """
+    with get_db_connection() as conn:
+        with conn.cursor() as cursor:
+            try:
+                cursor.execute(query, vars)
+                conn.commit()
+            except Exception as e:
+                conn.rollback()
+                raise e
+
+
+def get_point_info_except_Tin() -> dict:
     """
     根据property_id查询point_info表中的单条记录
     返回字典格式：{'property_id': ..., 'property_name': ..., ...}
     """
     query = """
         SELECT property_id FROM point_info 
+        WHERE value_symbol != 'Tin'
     """
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
@@ -321,10 +355,69 @@ def get_display_results():
             result = cursor.fetchone()
     return result if result else (None, None)
 
+def get_model_input(step):
+    query = f"""
+            SELECT * 
+            FROM model_input 
+            ORDER BY time_stamp DESC 
+            LIMIT {step};
+            """
+    with get_db_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            result = cursor.fetchall()
+    return result if result else None
+
+
+def get_static_symbol():
+    # 查询所有 property_id 和 value_symbol，排除 value_symbol 为 'Tin' 的数据
+    query = """
+            SELECT property_id, value_symbol
+            FROM point_info
+            """
+    result_dict = defaultdict(list)  # 使用 defaultdict 自动处理键不存在的情况
+    Tin = []
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query)
+
+                # 处理查询结果
+                for row in cursor.fetchall():
+                    property_id, value_symbol = row
+                    # 处理空值，使用 'symbol_unknown' 作为默认键
+                    if value_symbol == 'Tin':
+                        Tin.append(key)
+                        continue
+                    key = value_symbol if value_symbol else 'symbol_unknown'
+                    result_dict[key].append(property_id)
+    finally:
+        conn.close()  # 确保数据库连接关闭
+
+    return dict(result_dict), Tin  # 转换为普通字典返回
+
+def get_W():
+    query = """
+                SELECT property_id, data_value
+                FROM raw_collected_data
+                WHERE time_stamp = (
+                    SELECT MAX(time_stamp) 
+                    FROM raw_collected_data
+                ) AND property_id in ('EQD05030', 'EQD06030', 'EQD04030', 'EQD03030');
+            """
+    with get_db_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            result = cursor.fetchall()
+    return result if result else None
 
 if __name__ == '__main__':
     # print(get_point_info())
     # print(get_command_info())
     # print(get_analysis_info())
-    res = get_display_results()
-    print(res)
+    W = get_W()
+    W_1 = W[0][1]
+    W_2 = W[1][1]
+    W_3 = W[2][1]
+    W_4 = W[3][1]
+    print(W_1, W_2, W_3, W_4)
