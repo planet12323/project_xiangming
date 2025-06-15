@@ -137,10 +137,10 @@ if __name__ == '__main__':
         aids = list(ana_res.keys())
         data = [(timestamp, aid, ana_res[aid]) for aid in aids]
         update_analysis_results(data)
-        update_hourly_analysis()
-        update_daily_analysis()
-        update_monthly_analysis()
-        update_yearly_analysis()
+        update_hourly_analysis(timestamp)
+        update_daily_analysis(timestamp)
+        update_monthly_analysis(timestamp)
+        update_yearly_analysis(timestamp)
         
         cur_inputs = get_model_input(IDC.step*2 + IDC.rows_to_predict) #  step * [qcooling, tin, pit, outdoor, tsupply, tset]
         cur_inputs = np.array(cur_inputs)[:, 1:].astype(float)  # qcooling, tin, pit, outdoor, tsupply, tset

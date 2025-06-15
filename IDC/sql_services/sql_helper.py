@@ -182,15 +182,54 @@ def update_analysis_results(data):
                 raise e
 
 
-def update_hourly_analysis():
+def update_hourly_analysis(time_stamp):
     """
     批量更新hourly_analysis表
     data = [(time_stamp, device_selection, parameter_selection, analysis_value)]
     """
-    query = """
-        INSERT INTO hourly_analysis (time_stamp, device_selection, parameter_selection, analysis_value)
-        VALUES (%s, %s, %s, %s)
+
+    q1 = """
+            WITH latest_hour AS (
+                SELECT DATE_TRUNC('hour', MAX(time_stamp)) AS hour_start
+                FROM analysis_results
+            )
+            SELECT 
+                ar.analysis_id AS name,
+                SUM(ar.analysis_value) AS total_value
+            FROM analysis_results ar
+            JOIN latest_hour lh 
+                ON ar.time_stamp >= lh.hour_start 
+                AND ar.time_stamp < lh.hour_start + INTERVAL '1 hour'
+            GROUP BY ar.analysis_id;
     """
+    with get_db_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(q1)
+            alldata = cursor.fetchall()
+    data = []
+    time_stamp = time_stamp.replace(minute=0, second=0, microsecond=0)
+    param_sel = ['L-1磁悬浮机组','L-2磁悬浮机组', 'L-3螺杆机组', 'L-4螺杆机组']
+    ana_val = ['制冷量','耗电量', '负载量', 'COP']
+    for ps in param_sel:
+        for av in ana_val:
+            # Find the matching value in alldata
+            matched_value = next((row[1] for row in alldata if row[0] == ps + av), None)
+            if matched_value is not None:
+                data.append((time_stamp, ps, av, matched_value, 'kWh'))
+    W = next((row[1] for row in alldata if row[0] == '制冷系统总能耗'), None)
+    SCOP = next((row[1] for row in alldata if row[0] == '制冷系统SCOP'), None)
+    data.append((time_stamp, '制冷系统', '总能耗', W, 'kWh'))
+    data.append((time_stamp, '制冷系统', 'SCOP', SCOP, 'kWh'))
+
+    query = """
+            INSERT INTO hourly_analysis (time_stamp, device_selection, parameter_selection, analysis_value, unit)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (time_stamp, device_selection, parameter_selection)  -- 指定唯一约束列
+            DO UPDATE SET 
+                analysis_value = EXCLUDED.analysis_value,  -- 更新新值
+                unit = EXCLUDED.unit,
+                created_at = NOW()  -- 可选：更新创建时间
+        """
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
             try:
@@ -201,58 +240,130 @@ def update_hourly_analysis():
                 raise e
 
 
-def update_daily_analysis():
+def update_daily_analysis(time_stamp):
     """
     批量更新daily_analysis表
     data = [(time_stamp, device_selection, parameter_selection, analysis_value)]
     """
-    data=[]
-    query = """
-        INSERT INTO daily_analysis (time_stamp, device_selection, parameter_selection, analysis_value)
-        VALUES (%s, %s, %s, %s)
+    q1 = """
+            SELECT
+                device_selection,
+                parameter_selection,
+                SUM(analysis_value) AS total_analysis_value,
+                MAX(unit) AS unit  -- 假设同一组的unit相同
+            FROM hourly_analysis
+            WHERE 
+                DATE(time_stamp) = (SELECT DATE(MAX(time_stamp)) FROM hourly_analysis)
+            GROUP BY 
+                device_selection,
+                parameter_selection;
     """
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
+            cursor.execute(q1)
+            alldata = cursor.fetchall()
+
+    time_stamp = time_stamp.replace(hour=0, minute=0, second=0, microsecond=0)
+    data = [(time_stamp,) + p for p in alldata]
+    q2 = """
+            INSERT INTO daily_analysis (time_stamp, device_selection, parameter_selection, analysis_value, unit)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (time_stamp, device_selection, parameter_selection)  -- 指定唯一约束列
+            DO UPDATE SET 
+                analysis_value = EXCLUDED.analysis_value,  -- 更新新值
+                unit = EXCLUDED.unit,
+                created_at = NOW()  -- 可选：更新创建时间
+            """
+    with get_db_connection() as conn:
+        with conn.cursor() as cursor:
             try:
-                extras.execute_batch(cursor, query, data, page_size=100)
+                extras.execute_batch(cursor, q2, data, page_size=100)
                 conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
 
 
-def update_monthly_analysis():
+def update_monthly_analysis(time_stamp):
     """
     批量更新monthly_analysis表
     data = [(time_stamp, device_selection, parameter_selection, analysis_value)]
     """
-    query = """
-        INSERT INTO monthly_analysis (time_stamp, device_selection, parameter_selection, analysis_value)
-        VALUES (%s, %s, %s, %s)
-    """
+    q1 = """
+         SELECT device_selection, \
+                parameter_selection, \
+                SUM(analysis_value) AS total_analysis_value, \
+                MAX(unit)           AS unit -- 假设同一组的unit相同
+         FROM daily_analysis
+         WHERE
+             DATE (time_stamp) = (SELECT DATE (MAX (time_stamp)) FROM hourly_analysis)
+         GROUP BY
+             device_selection,
+             parameter_selection; \
+         """
+    with get_db_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(q1)
+            alldata = cursor.fetchall()
+
+    time_stamp = time_stamp.replace(day=0, hour=0, minute=0, second=0, microsecond=0)
+    data = [(time_stamp,) + p for p in alldata]
+    q2 = """
+         INSERT INTO monthly_analysis (time_stamp, device_selection, parameter_selection, analysis_value, unit)
+         VALUES (%s, %s, %s, %s, %s) ON CONFLICT (time_stamp, device_selection, parameter_selection)  -- 指定唯一约束列
+            DO \
+         UPDATE SET
+             analysis_value = EXCLUDED.analysis_value, -- 更新新值 \
+             unit = EXCLUDED.unit, \
+             created_at = NOW() -- 可选：更新创建时间 \
+         """
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
             try:
-                extras.execute_batch(cursor, query, data, page_size=100)
+                extras.execute_batch(cursor, q2, data, page_size=100)
                 conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
 
 
-def update_yearly_analysis():
+def update_yearly_analysis(time_stamp):
     """
     批量更新yearly_analysis表
     data = [(time_stamp, device_selection, parameter_selection, analysis_value, unit)]
     """
-    query = """
-        INSERT INTO yearly_analysis (time_stamp, device_selection, parameter_selection, analysis_value, unit)
-        VALUES (%s, %s, %s, %s, %s)
-    """
+    q1 = """
+         SELECT device_selection, \
+                parameter_selection, \
+                SUM(analysis_value) AS total_analysis_value, \
+                MAX(unit)           AS unit -- 假设同一组的unit相同
+         FROM monthly_analysis
+         WHERE
+             DATE (time_stamp) = (SELECT DATE (MAX (time_stamp)) FROM hourly_analysis)
+         GROUP BY
+             device_selection,
+             parameter_selection; \
+         """
+    with get_db_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(q1)
+            alldata = cursor.fetchall()
+
+    time_stamp = time_stamp.replace(month=0,day=0,hour=0, minute=0, second=0, microsecond=0)
+    data = [(time_stamp,) + p for p in alldata]
+    q2 = """
+         INSERT INTO yearly_analysis (time_stamp, device_selection, parameter_selection, analysis_value, unit)
+         VALUES (%s, %s, %s, %s, %s) ON CONFLICT (time_stamp, device_selection, parameter_selection)  -- 指定唯一约束列
+            DO \
+         UPDATE SET
+             analysis_value = EXCLUDED.analysis_value, -- 更新新值 \
+             unit = EXCLUDED.unit, \
+             created_at = NOW() -- 可选：更新创建时间 \
+         """
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
             try:
-                extras.execute_batch(cursor, query, data, page_size=100)
+                extras.execute_batch(cursor, q2, data, page_size=100)
                 conn.commit()
             except Exception as e:
                 conn.rollback()
