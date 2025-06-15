@@ -85,45 +85,36 @@ def calculate_feature_temperature(X):
 
 
 def raw_data_analysis(raw_data_dict, W, Tin):
-    W_1 = W[0][1]
-    W_2 = W[1][1]
-    W_3 = W[2][1]
-    W_4 = W[3][1]
-    analysis_id = ['Qcooling#1''Qcooling#2','Qcooling#3','Qcooling#4','W_1’', 'W_2’',
-                    'W_3’',
-                    'W_4’',
-                    'PLR1',
-                    'PLR2',
-                    'PLR3',
-                    'PLR4',
-                    'COP#1',
-                    'COP#2',
-                    'COP#3',
-                    'COP#4',
-                    'W',
-                    'SCOP',
-                    'Tin'
-                    ]
-    Qcooling1 = 4.2 * raw_data_dict['G1'] * (raw_data_dict['tei_1'] - raw_data_dict['teo_1']) / 3.6
-    Qcooling2 = 4.2 * raw_data_dict['G2'] * (raw_data_dict['tei_2'] - raw_data_dict['teo_2']) / 3.6
-    Qcooling3 = 4.2 * raw_data_dict['G3'] * (raw_data_dict['tei_3'] - raw_data_dict['teo_3']) / 3.6
-    Qcooling4 = 4.2 * raw_data_dict['G4'] * (raw_data_dict['tei_4'] - raw_data_dict['teo_4']) / 3.6
-    W_1 = raw_data_dict['W_1'] - W_1
-    W_2 = raw_data_dict['W_2'] - W_2
-    W_3 = raw_data_dict['W_3'] - W_3
-    W_4 = raw_data_dict['W_4'] - W_4
-    PLR1 = Qcooling1 / 350
-    PLR2 = Qcooling2 / 350
-    PLR3 = Qcooling3 / 886
-    PLR4 = Qcooling4 / 886
-    COP1 = Qcooling1 / raw_data_dict['Pc_1']
-    COP2 = Qcooling2 / raw_data_dict['Pc_2']
-    COP3 = Qcooling3 / raw_data_dict['Pc_3']
-    COP4 = Qcooling4 / raw_data_dict['Pc_4']
-    W = W_1+W_2+W_3+W_4
-    SCOP =(Qcooling1+Qcooling2+Qcooling3+Qcooling4)/(raw_data_dict['Pc_1']+raw_data_dict['Pc_2']+raw_data_dict['Pc_3']+raw_data_dict['Pc_4'])
-    Tin = Tin
-    
+    ana_res = {
+        'Qcooling#1': 4.2 * raw_data_dict['G1'] * (raw_data_dict['tei_1'] - raw_data_dict['teo_1']) / 3.6,
+        'Qcooling#2': 4.2 * raw_data_dict['G2'] * (raw_data_dict['tei_2'] - raw_data_dict['teo_2']) / 3.6,
+        'Qcooling#3': 4.2 * raw_data_dict['G3'] * (raw_data_dict['tei_3'] - raw_data_dict['teo_3']) / 3.6,
+        'Qcooling#4': 4.2 * raw_data_dict['G4'] * (raw_data_dict['tei_4'] - raw_data_dict['teo_4']) / 3.6,
+        'W_1’': raw_data_dict['W_1'] - W[0][1],
+        'W_2’': raw_data_dict['W_2'] - W[1][1],
+        'W_3’': raw_data_dict['W_3'] - W[2][1],
+        'W_4’': raw_data_dict['W_4'] - W[3][1],
+        'PLR1': (4.2 * raw_data_dict['G1'] * (raw_data_dict['tei_1'] - raw_data_dict['teo_1']) / 3.6) / 350,
+        'PLR2': (4.2 * raw_data_dict['G2'] * (raw_data_dict['tei_2'] - raw_data_dict['teo_2']) / 3.6) / 350,
+        'PLR3': (4.2 * raw_data_dict['G3'] * (raw_data_dict['tei_3'] - raw_data_dict['teo_3']) / 3.6) / 886,
+        'PLR4': (4.2 * raw_data_dict['G4'] * (raw_data_dict['tei_4'] - raw_data_dict['teo_4']) / 3.6) / 886,
+        'COP#1': (4.2 * raw_data_dict['G1'] * (raw_data_dict['tei_1'] - raw_data_dict['teo_1']) / 3.6) / raw_data_dict[
+            'Pc_1'],
+        'COP#2': (4.2 * raw_data_dict['G2'] * (raw_data_dict['tei_2'] - raw_data_dict['teo_2']) / 3.6) / raw_data_dict[
+            'Pc_2'],
+        'COP#3': (4.2 * raw_data_dict['G3'] * (raw_data_dict['tei_3'] - raw_data_dict['teo_3']) / 3.6) / raw_data_dict[
+            'Pc_3'],
+        'COP#4': (4.2 * raw_data_dict['G4'] * (raw_data_dict['tei_4'] - raw_data_dict['teo_4']) / 3.6) / raw_data_dict[
+            'Pc_4'],
+        'W': (raw_data_dict['W_1'] - W[0][1]) + (raw_data_dict['W_2'] - W[1][1]) + (raw_data_dict['W_3'] - W[2][1]) + (
+                    raw_data_dict['W_4'] - W[3][1]),
+        'SCOP': sum(
+            4.2 * raw_data_dict[f'G{i}'] * (raw_data_dict[f'tei_{i}'] - raw_data_dict[f'teo_{i}']) / 3.6 for i in
+            range(1, 5)) / sum(raw_data_dict[f'Pc_{i}'] for i in range(1, 5)),
+        'Tin': Tin
+    }
+    return ana_res
+
 
 
 if __name__ == '__main__':
@@ -136,8 +127,6 @@ if __name__ == '__main__':
 
         W = get_W()
         update_raw_collected_data(raw_data_triple) #  update database
-        
-
 
         input_variables = data_process_by_method(raw_data_dict, configs)
         input_tuple = (timestamp, input_variables['Qcooling'],input_variables['Tin'][configs.cal_method],input_variables['PIT'],
@@ -145,7 +134,9 @@ if __name__ == '__main__':
         update_model_input(input_tuple)
         
         ana_res = raw_data_analysis(raw_data_dict, W, input_variables['Tin'][configs.cal_method])
-        update_analysis_results(ana_res)
+        aids = list(ana_res.keys())
+        data = [(timestamp, aid, ana_res[aid]) for aid in aids]
+        update_analysis_results(data)
         update_hourly_analysis()
         update_daily_analysis()
         update_monthly_analysis()
@@ -161,9 +152,12 @@ if __name__ == '__main__':
         data3 = cur_inputs[:n - 1, 3:4]
         result = IDC.main_idc(data1, data2, data3)
 
-        command_id = get_command_info()
-
-
-        # analysis_write_database()
-        # send_command()
-        # time.sleep(configs.cal_frequency * 60)
+        commands = {"flow_l1": result['Vmaglev1'],
+                      "flow_l2": result['Vmaglev2'],
+                      "flow_l3": result['Vscrew1'],
+                      "flow_l4": result['Vscrew2'],
+                      "supply_temp": result['Supply'],
+                      "temperature_difference": result['DeltaT']
+                    }
+        helper_http.send_command(configs.url_frontend, commands)
+        time.sleep(configs.cal_frequency * 60)

@@ -60,6 +60,32 @@ def get_real_time_data(url = 'http://192.168.1.246:10088/api/GetRealTimeData', d
         return []
 
 
+def send_command(url='https://139.129.89.24/niagara/xm/tms/device/setControlPoints', commands=None):
+    """
+    发送控制命令到指定设备
+    :param url: 控制命令发送地址
+    :param commands: 控制命令字典，包含具体控制参数
+    :return: 返回服务器响应的数据或空列表
+    """
+    if not isinstance(commands, dict):
+        print("无效的命令格式: commands 参数必须是字典")
+        return []
+
+    try:
+        response = requests.post(url, json=commands)
+        response.raise_for_status()  # 检查请求是否成功
+
+        data = response.json()
+        if data.get("Status") == "ok":
+            return data.get("Data", [])
+        else:
+            print(f"请求失败: {data.get('Message', '未知错误')}")
+            return []
+    except requests.exceptions.RequestException as e:
+        print(f"请求异常: {e}")
+        return []
+
+
 # 示例用法
 if __name__ == "__main__":
     # 获取所有设备配置

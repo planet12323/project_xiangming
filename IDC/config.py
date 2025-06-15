@@ -39,6 +39,7 @@ class Config:
         self.cal_frequency = cal_frequency
         self.url_GetDeviceList = 'http://192.168.1.246:10088/api/GetDeviceList'
         self.url_GetRealTimeData = 'http://192.168.1.246:10088/api/GetRealTimeData'
+        self.url_frontend = 'https://139.129.89.24/niagara/xm/tms/device/setControlPoints'
         self.static_symbol_lists = static_symbol_lists
 
 

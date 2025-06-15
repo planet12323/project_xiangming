@@ -182,7 +182,7 @@ def update_analysis_results(data):
                 raise e
 
 
-def update_hourly_analysis(data):
+def update_hourly_analysis():
     """
     批量更新hourly_analysis表
     data = [(time_stamp, device_selection, parameter_selection, analysis_value)]
@@ -221,7 +221,7 @@ def update_daily_analysis():
                 raise e
 
 
-def update_monthly_analysis(data):
+def update_monthly_analysis():
     """
     批量更新monthly_analysis表
     data = [(time_stamp, device_selection, parameter_selection, analysis_value)]
@@ -240,7 +240,7 @@ def update_monthly_analysis(data):
                 raise e
 
 
-def update_yearly_analysis(data):
+def update_yearly_analysis():
     """
     批量更新yearly_analysis表
     data = [(time_stamp, device_selection, parameter_selection, analysis_value, unit)]

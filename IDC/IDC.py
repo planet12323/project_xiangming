@@ -262,10 +262,10 @@ def main_idc(data1, data2, data3) -> Dict:
     result = {
         'Supply': np.mean(supply_temp),
         'DeltaT': np.mean(deltaT),
-        'Vscrew1': np.mean(screw1_flow),
-        'Vscrew2': np.mean(screw2_flow),
         'Vmaglev1': np.mean(maglev1_flow),
         'Vmaglev2': np.mean(maglev2_flow),
+        'Vscrew1': np.mean(screw1_flow),
+        'Vscrew2': np.mean(screw2_flow),
         'Cooling': co,
         'Temp': tin,
         'Pscrew1': sc1,
