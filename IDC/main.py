@@ -132,7 +132,8 @@ if __name__ == '__main__':
         input_tuple = (timestamp, input_variables['Qcooling'],input_variables['Tin'][configs.cal_method],input_variables['PIT'],
                        input_variables['Outdoor'], input_variables['Tsupply'], input_variables['Tset'])
         update_model_input(input_tuple)
-        
+
+
         ana_res = raw_data_analysis(raw_data_dict, W, input_variables['Tin'][configs.cal_method])
         aids = list(ana_res.keys())
         data = [(timestamp, aid, ana_res[aid]) for aid in aids]
